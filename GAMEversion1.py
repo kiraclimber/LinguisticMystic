@@ -1,8 +1,7 @@
-#Made By Kira
-#Debugged by Alex, Otis, and Preston
 import goslate
 import random
 from tkinter import *
+import ctypes
 import os
 timesThrough = 0
 herLove = "Trutle"
@@ -75,11 +74,11 @@ while(correctness == "Correct"):
         #print(availableLanguages)
         startLabel1 = Label(top, text = "Hello, welcome to The Linguistic Mystic!")
         startLabel2 = Label(top, text = "First, enter some text.")
-        startLabel3 = Label(top, text = "Then, choose a level. Level 1 is the easiest, level 5 is the hardest.")
-        startLabel4 = Label(top, text = "If you beat level 5, you unlock levels based on different regions.")
+        startLabel3 = Label(top, text = "Then, choose a level. Level 1 is the easiest, Level 5 is the hardest.")
+        startLabel4 = Label(top, text = "If you beat Level 5, you unlock levels based on different regions.")
         startLabel5 = Label(top, text = "The text you entered will be translated into different languages")
         startLabel6 = Label(top, text = "You have to guess what language, among the four options, it is.")
-        startLabel7 = Label(top, text = "Let's do it!!!!!")
+        startLabel7 = Label(top, text = "Let's do it!")
         unlockedLabel1 = Label(top, text = "The language regions have been unlocked.")
         unlockedLabel2 = Label(top, text = "Enter a new phrase to be translated and select a level.")
         if (levelFiveComplete == False):
@@ -117,8 +116,14 @@ while(correctness == "Correct"):
             global languageLevel
             global userRequestForTranslation
             userRequestForTranslation = E.get()
-            if(timesThrough == 0):
-                languageLevel = var.get()
+            if(' ' in userRequestForTranslation) == True:
+                sentence = True
+            if(userRequestForTranslation.isalnum() or sentence == True):
+                if(timesThrough == 0):
+                    languageLevel = var.get()
+            else:
+               ctypes.windll.user32.MessageBoxW(0, u"Alphanumeric Only", u"Alphanumeric only", 0)
+               quit()
             top.destroy()
         startButton = Button(top,text = "Play!",command = startTranslation, height = 3, width = 30)
         startButton.pack()
@@ -213,6 +218,8 @@ while(correctness == "Correct"):
     top = Tk()
     windowSettings(top)
     changeWindowIcon(top)
+    def monkey():
+        quit()
     def playAgain():
         top.destroy()
     def tryAgain():
@@ -227,10 +234,11 @@ while(correctness == "Correct"):
     playagain = Button(top, text = "CONTINUE",command = playAgain,height = 3, width = 30,bg = "green")
     mainmenu = Button(top, text = "MAIN MENU",command = playAgain,height = 3, width = 30,bg = "green")
     gameOver = Label(top,text = "GAME OVER",bg="red",fg="white")
+    tryagain = Button(top, text="PLAY AGAIN",command=tryAgain, height=5, width=30, bg = "green")
     answer = Label(top, text="The Correct Answer was "+languages[languageCodes.index(i)])
     showScore = Label(top, text = "Your Score is: " +str(timesThrough + score))
-    tryagain = Button(top, text="PLAY AGAIN",command=tryAgain, height=5, width=30)
-    youWin = Label(top,text = "YOU WIN!!!!!!!")
+    monkey = Button(top, text = "EXIT", bg="brown", command = monkey, height = 3, width = 30)
+    youWin = Label(top,text = "YOU WIN")
     regionsUnlock = Label(top,text = "Regions have been unlocked!")
     regionsUnlock2 = Label(top,text = "The cheat code to unlock regions in the future is trutle")
     if(correctness  == "Correct"):
@@ -255,5 +263,6 @@ while(correctness == "Correct"):
         answer.pack()
         showScore.pack()
         tryagain.pack(side = BOTTOM)
+        monkey.pack()
     top.mainloop()
     timesThrough += 1
